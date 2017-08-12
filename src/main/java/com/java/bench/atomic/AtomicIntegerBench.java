@@ -38,30 +38,30 @@ import org.openjdk.jmh.infra.Blackhole;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(Threads.MAX)
 public class AtomicIntegerBench {
-  final static int OPCOUNT = 10240;
+	final static int OPCOUNT = 10240;
 
-  @State(Scope.Benchmark)
-  public static class AtomicIntegerBenchState {
-    AtomicInteger atom;
-    ArrayList<Integer> array;
+	@State(Scope.Benchmark)
+	public static class AtomicIntegerBenchState {
+		AtomicInteger atom;
+		ArrayList<Integer> array;
 
-    @Setup
-    public void setup() {
-      Random rng = new Random();
-      array = new ArrayList<>(OPCOUNT);
-      for(int i=0; i<OPCOUNT; ++i) {
-        array.add(rng.nextInt(100));
-      }
-      atom = new AtomicInteger();
-    }
-  }
+		@Setup
+		public void setup() {
+			Random rng = new Random();
+			array = new ArrayList<>(OPCOUNT);
+			for (int i = 0; i < OPCOUNT; ++i) {
+				array.add(rng.nextInt(100));
+			}
+			atom = new AtomicInteger();
+		}
+	}
 
-  @Benchmark
-  public void testAtomicInteger(AtomicIntegerBenchState state, Blackhole bh) {
-    for(int i=0; i<state.array.size(); ++i) {
-      state.atom.addAndGet(state.array.get(i));
-      bh.consume(state.atom.get());
-    }
-  }
+	@Benchmark
+	public void testAtomicInteger(AtomicIntegerBenchState state, Blackhole bh) {
+		for (int i = 0; i < state.array.size(); ++i) {
+			state.atom.addAndGet(state.array.get(i));
+			bh.consume(state.atom.get());
+		}
+	}
 
 }

@@ -42,12 +42,13 @@ public class ConcurrentHashMapBench {
 	public static class MapBenchState {
 		ArrayList<Integer> array;
 		Map<Integer, Integer> map;
-		
+
 		@Setup
 		public void setup() {
 			Random rng = new Random();
 			array = new ArrayList<>(OPCOUNT);
-			for(int i=0; i<OPCOUNT; ++i) array.add(rng.nextInt());
+			for (int i = 0; i < OPCOUNT; ++i)
+				array.add(rng.nextInt());
 
 			map = new ConcurrentHashMap<>();
 		}
@@ -55,9 +56,9 @@ public class ConcurrentHashMapBench {
 
 	@Benchmark
 	public void testMap(MapBenchState state, Blackhole bh) {
-		for(int i=0; i<state.array.size(); ++i) {
+		for (int i = 0; i < state.array.size(); ++i) {
 			state.map.put(state.array.get(i), i);
-			bh.consume(state.map.get(state.array.get(i)+1));
+			bh.consume(state.map.get(state.array.get(i) + 1));
 		}
 	}
 }

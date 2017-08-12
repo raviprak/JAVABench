@@ -6,16 +6,18 @@ import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
-import org.openjdk.jmh.infra.Blackhole;
 
+/**
+ * This tests the number of times a method can be called, were there no locking involved
+ */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(Threads.MAX)
-public class IntrinsicLocking {
+public class NoLocking {
+	
 	@Benchmark
-	public synchronized void syncMethod() {
+	public void noLockingMethod() {
+		//No work to do here
 	}
 }
