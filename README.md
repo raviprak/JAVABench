@@ -44,7 +44,7 @@ $ java -jar target/javabench.jar -jvm /usr/java/latest/bin/java -jvmArgs -XX:All
 9. TreeSet vs PriorityQueue https://issues.apache.org/jira/browse/HDFS-12278
 10. Native IO vs JAVA IO?
 11. Finalized vs non-finalized
-
+12. How many times can wait() notify() be called in a second.
 
 ### Measurement variables
 1. JDK7, JDK8, JDK9. Let's compile and run on the same version and not worry about cross-version testing.
