@@ -27,6 +27,8 @@ $ java -jar target/javabench.jar -jvm /usr/java/latest/bin/java -jvmArgs -XX:All
 ```
 
 ### Benchmarks
+1. NoLocking : How often can an unsynchronized method be called?
+2. IntrinsicLocking : How often can a synchronized method be called?
 1. AtomicInteger performance
 2. ConcurrentHashMap performance
 3. Collections.synchronizedMap(HashMap) performance

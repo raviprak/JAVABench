@@ -34,6 +34,11 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.infra.Blackhole;
 
+/**
+ * This benchmark tests how frequently the value of an java.util.concurrent.atomic.AtomicInteger object can be updated.
+ *
+ * This test spawns as many threads as there are cores in the test environment.
+ */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(Threads.MAX)
