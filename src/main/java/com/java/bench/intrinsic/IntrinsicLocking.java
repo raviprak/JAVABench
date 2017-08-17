@@ -28,9 +28,9 @@ import org.openjdk.jmh.annotations.Threads;
 /**
  * This benchmark tests how frequently a synchronized method can be called.
  *
- * This test spawns as many threads as there are cores in the test environment.
- *
- * When run in default (throughput) mode, higher numbers mean better performance.
+ * By default:
+ * 1. This test spawns as many threads as there are cores in the test environment.
+ * 2. Higher numbers mean better performance.
  */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)

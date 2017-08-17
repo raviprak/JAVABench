@@ -31,9 +31,9 @@ import org.openjdk.jmh.annotations.Threads;
  * This is very similar to the first sample in JMH, except that it calls a second method. This is
  * done so that it can be similar to the IntrinsicLocking benchmark
  *
- * This test spawns as many threads as there are cores in the test environment.
- *
- * When run in default (throughput) mode, higher numbers mean better performance.
+ * By default:
+ * 1. This test spawns as many threads as there are cores in the test environment.
+ * 2. Higher numbers mean better performance.
  */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
@@ -41,10 +41,11 @@ import org.openjdk.jmh.annotations.Threads;
 public class NoLocking {
 
 	private void myUnsynchronizedMethod() {
+		//Intentionally left blank
 	}
 
 	@Benchmark
 	public void noLockingMethod() {
-		//No work to do here
+		myUnsynchronizedMethod();
 	}
 }
