@@ -45,6 +45,10 @@ $ java -jar target/javabench.jar -jvm /usr/java/latest/bin/java -jvmArgs -XX:All
 10. Native IO vs JAVA IO?
 11. Finalized vs non-finalized
 12. How many times can wait() notify() be called in a second.
+13. Varargs overhead
+14. Boxing overhead
+15. Immutability performance gains
+16. Eclipse collections? 
 
 ### Measurement variables
 1. JDK7, JDK8, JDK9. Let's compile and run on the same version and not worry about cross-version testing.
