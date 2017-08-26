@@ -16,49 +16,72 @@
  */
 package com.java.bench.maps;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
-import org.openjdk.jmh.infra.Blackhole;
 
+/**
+ * This benchmark tests how frequently operations can be handled by a java.util.concurrent.ConcurrentHashMap
+ *
+ * By default:
+ * 1. This test spawns as many threads as there are cores in the test environment.
+ * 2. Higher numbers mean better performance.
+ */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(Threads.MAX)
 public class ConcurrentHashMapBench {
-	final static int OPCOUNT = 10240;
+	final static int HASH_MAP_SIZE = 1023;
+	final static float LOAD_FACTOR = 0.75f;
 
+	@State(Scope.Thread)
+	public static class CounterState {
+		/** This is the key that we use to distribute data into the ConcurrentHashMap.
+		 * Even though we only increment it, hopefully with multiple threads, the distribution of accesses
+		 * over the ConcurrentHashMap is "randomized"
+		 */
+		int counter;
+
+		@Setup
+		public void setup() {
+			counter = 0;
+		}
+	}
 	@State(Scope.Benchmark)
-	public static class MapBenchState {
-		ArrayList<Integer> array;
+	public static class MapState {
+		/** This is the CHM that is exercised
+		 * The key value pairs are Integer because that is most likely the word size.
+		 */
 		Map<Integer, Integer> map;
 
 		@Setup
 		public void setup() {
-			Random rng = new Random();
-			array = new ArrayList<>(OPCOUNT);
-			for (int i = 0; i < OPCOUNT; ++i)
-				array.add(rng.nextInt());
-
-			map = new ConcurrentHashMap<>();
+			// TODO : Ideally there should be another benchmark that tests the improvement when we also inform CHM about concurrencyLevel.
+			// However its not really prevalent.
+			map = new ConcurrentHashMap<>(HASH_MAP_SIZE, LOAD_FACTOR);
+			//We'll seed the CHM with HASH_MAP_SIZE keys so that gets actually return data.
 		}
 	}
 
+	/**
+	 *	This benchmark tests how frequently key-value pairs can be added to a ConcurrentHashMap
+	 */
 	@Benchmark
-	public void testMap(MapBenchState state, Blackhole bh) {
-		for (int i = 0; i < state.array.size(); ++i) {
-			state.map.put(state.array.get(i), i);
-			bh.consume(state.map.get(state.array.get(i) + 1));
-		}
+	public void testMapPut(MapState mapState, CounterState ctrState) {
+		//TODO : Should we do something about auto-boxing here?
+		mapState.map.put(ctrState.counter, ctrState.counter);
+		//Increment the counter;
+		ctrState.counter++;
+		//This is similar to a modulo operation since HASH_MAP_SIZE is a power of 2
+		ctrState.counter &= 0xFF;
 	}
 }

@@ -33,7 +33,7 @@ $ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
 ### Benchmarks
 1. NoLocking : How often can an unsynchronized method be called?
 2. IntrinsicLocking : How often can a synchronized method be called?
-1. AtomicInteger performance
+1. AtomicInteger : How often can an AtomicInteger be incremented
 2. ConcurrentHashMap performance
 3. Collections.synchronizedMap(HashMap) performance
 
