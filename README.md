@@ -26,6 +26,10 @@ To run the benchmark with specific JVM arguments (as shown in help) :
 $ java -jar target/javabench.jar -jvm /usr/java/latest/bin/java -jvmArgs -XX:AllocatePrefetchLines=3
 ```
 
+To quickly run a benchmark while you are developing (as shown in help) :
+```
+$ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
+
 ### Benchmarks
 1. NoLocking : How often can an unsynchronized method be called?
 2. IntrinsicLocking : How often can a synchronized method be called?
