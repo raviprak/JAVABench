@@ -1,6 +1,8 @@
 # JAVABench
 A suite for understanding the performance of JAVA primitives, Collections, and features.
 
+Please see the performance graphs here : https://www.raviprak.com/research/java/JAVABench/JAVABench.html
+
 To build, please run 
 ```
 $ mvn package
