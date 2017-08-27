@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -67,7 +68,8 @@ public class SynchronizedHashMapBench {
 		 */
 		Map<Integer, Integer> map;
 
-		@Setup
+		//Run the setup only once for all iteration of the benchmark.
+		@Setup(Level.Trial)
 		public void setup() {
 			//Initialize the map
 			map = Collections.synchronizedMap(new HashMap<>(HASH_MAP_SIZE, LOAD_FACTOR));

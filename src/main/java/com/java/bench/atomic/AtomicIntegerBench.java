@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -46,7 +47,8 @@ public class AtomicIntegerBench {
 	public static class AtomicIntegerBenchState {
 		AtomicInteger atom;
 
-		@Setup
+		//Run the setup only once for all iteration of the benchmark.
+		@Setup(Level.Trial)
 		public void setup() {
 			atom = new AtomicInteger();
 		}
