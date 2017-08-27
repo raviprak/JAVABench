@@ -47,15 +47,14 @@ import com.java.bench.util.rng.BenchRandomUtil;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Threads(Threads.MAX)
 public class ConcurrentHashMapBench {
-	// We will keep the hash map size under this. (We use modulo on the pseudoRN)
+	// We will keep the hash map size under this. (We use "modulo" on the pseudoRN)
 	final static int MAX_BITS = 16;
 	final static int HASH_MAP_SIZE = (int) Math.pow(2, MAX_BITS) - 1;
 	final static float LOAD_FACTOR = 0.75f;
 
 	@State(Scope.Thread)
 	public static class RNGState {
-		/** This is an integer that we use to distribute data into the ConcurrentHashMap.
-		 * We're using a simple XORshift for generating pseudo-random numbers : https://en.wikipedia.org/wiki/Xorshift
+		/** We're using a simple XORshift for generating pseudo-random numbers : https://en.wikipedia.org/wiki/Xorshift
 		 * because it is used in the measurement loop.
 		 */
 		BenchRandomUtil rng = new BenchRandomUtil();
@@ -63,7 +62,7 @@ public class ConcurrentHashMapBench {
 
 	@State(Scope.Benchmark)
 	public static class MapState {
-		/** This is the CHM that is exercised
+		/** This is the ConcurrentHashMap that is exercised
 		 * The key value pairs are Integer because that is most likely the word size.
 		 */
 		Map<Integer, Integer> map;
