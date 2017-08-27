@@ -36,9 +36,9 @@ $ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
 1. NoLocking : How often can an unsynchronized method be called?
 2. IntrinsicLocking : How often can a synchronized method be called?
 3. AtomicInteger : How often can an AtomicInteger be incremented
-4. Random : How often can java.util.Random.nextInt() be called. Compare it with XORShift.
-2. ConcurrentHashMap performance : How often can get and put be called on a ConcurrentHashMap
-3. Collections.synchronizedMap(HashMap) performance
+4. Random : How often can different Random Number Generators produce integers?
+5. ConcurrentHashMap performance : How often can get and put be called on a ConcurrentHashMap
+6. Collections.synchronizedMap(HashMap) performance
 
 
 ### TO DO

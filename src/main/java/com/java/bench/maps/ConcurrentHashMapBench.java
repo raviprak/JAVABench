@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.java.bench.maps;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +30,8 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.infra.Blackhole;
+
+import com.java.bench.util.rng.BenchRandomUtil;
 
 /**
  * This benchmark tests how frequently operations can be handled by a java.util.concurrent.ConcurrentHashMap
@@ -55,17 +57,8 @@ public class ConcurrentHashMapBench {
 		/** This is an integer that we use to distribute data into the ConcurrentHashMap.
 		 * We're using a simple XORshift for generating pseudo-random numbers : https://en.wikipedia.org/wiki/Xorshift
 		 * because it is used in the measurement loop.
-		 * Seeding it with a better RNG (java.util.Random) though
 		 */
-		Random rng = new Random();
-		int pseudoRN = rng.nextInt();
-		private int getNextRN() {
-			// We're using a simple XORshift for generating pseudo-random numbers. Courtesy : https://en.wikipedia.org/wiki/Xorshift
-			pseudoRN ^= pseudoRN << 13;
-			pseudoRN ^= pseudoRN >> 17;
-			pseudoRN ^= pseudoRN << 5;
-			return pseudoRN;
-		}
+		BenchRandomUtil rng = new BenchRandomUtil();
 	}
 
 	@State(Scope.Benchmark)
@@ -93,7 +86,7 @@ public class ConcurrentHashMapBench {
 	@Benchmark
 	public void testMapPut(MapState mapState, RNGState rngState) {
 		//This is similar to a modulo operation since HASH_MAP_SIZE is 2^n - 1
-		int keyValue = rngState.getNextRN() & HASH_MAP_SIZE;
+		int keyValue = rngState.rng.getNextXorShiftRN() & HASH_MAP_SIZE;
 		mapState.map.put(keyValue, keyValue);
 	}
 
@@ -103,7 +96,7 @@ public class ConcurrentHashMapBench {
 	@Benchmark
 	public void testMapGet(MapState mapState, RNGState rngState, Blackhole bh) {
 		//This is similar to a modulo operation since HASH_MAP_SIZE is 2^n - 1
-		int keyValue = rngState.getNextRN() & HASH_MAP_SIZE;
+		int keyValue = rngState.rng.getNextXorShiftRN() & HASH_MAP_SIZE;
 		bh.consume(mapState.map.get(keyValue));
 	}
 
