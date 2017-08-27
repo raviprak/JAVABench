@@ -83,6 +83,7 @@ public class ConcurrentHashMapBench {
 
 	/**
 	 *	This benchmark tests how frequently key-value pairs can be added to a ConcurrentHashMap
+	 *	TODO: Consider using JMH Groups (JMHSample_15_Asymmetric) if we should have a mix of gets and puts simultaneously
 	 */
 	@Benchmark
 	public void testMapPut(MapState mapState, RNGState rngState) {
@@ -93,6 +94,7 @@ public class ConcurrentHashMapBench {
 
 	/**
 	 *	This benchmark tests how frequently key-value pairs can be retrieved from a ConcurrentHashMap
+	 *	TODO: Consider using JMH Groups (JMHSample_15_Asymmetric) if we should have a mix of gets and puts simultaneously
 	 */
 	@Benchmark
 	public void testMapGet(MapState mapState, RNGState rngState, Blackhole bh) {
