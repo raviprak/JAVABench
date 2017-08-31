@@ -31,6 +31,7 @@ $ java -jar target/javabench.jar -jvm /usr/java/latest/bin/java -jvmArgs -XX:All
 To quickly run a benchmark while you are developing (as shown in help) :
 ```
 $ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
+```
 
 ### Benchmarks
 1. NoLocking : How often can an unsynchronized method be called?
@@ -45,19 +46,15 @@ $ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
 1. Lambda for sorting performance
 2. Streams for aggregating
 3. Dynamic loading (calling via an abstract reference vs direct reference)
-4. How many times can an intrinsic lock be captured and released? (synchronized block / method)
-5. JMH_Sample_01 : Just a method call
-6. How many times can a wait() notify() be called in a second?
-7. Reflection overhead.
-8. Dependency injection (Dagger2) overhead.
-9. TreeSet vs PriorityQueue https://issues.apache.org/jira/browse/HDFS-12278
-10. Native IO vs JAVA IO?
-11. Finalized vs non-finalized
-12. How many times can wait() notify() be called in a second.
-13. Varargs overhead
-14. Boxing overhead
-15. Immutability performance gains
-16. Eclipse collections? 
+4. How many times can a wait() notify() be called in a second?
+5. Reflection overhead.
+6. Dependency injection (Dagger2) overhead.
+7. TreeSet vs PriorityQueue https://issues.apache.org/jira/browse/HDFS-12278
+8. Native IO vs JAVA IO?
+9. Finalized vs non-finalized
+10. Varargs overhead
+11. Boxing overhead
+12. Eclipse collections? 
 
 ### Measurement variables
 1. JDK7, JDK8, JDK9. Let's compile and run on the same version and not worry about cross-version testing.
