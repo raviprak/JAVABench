@@ -1,10 +1,13 @@
 package com.java.bench.util.environ;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -29,6 +32,7 @@ public class Environment {
 
 	// These come from the os specific interfaces. e.g. on Linux, it comes from /proc
 	public String processorType;
+	public String memFree;
 
 	public Environment() throws IOException, InterruptedException {
 		Runtime runtime = Runtime.getRuntime();
@@ -42,45 +46,51 @@ public class Environment {
 		osName = prop.getProperty("os.name");
 
 		if(prop.getProperty("os.name").contains("nux")) {
-			deduceLinuxEnvironment(runtime);
+			deduceLinuxEnvironment();
 		}
 	}
 
 	/**
-	 * This method returns the output of running a command.
+	 * This method returns the output of running a single command.
+	 * It does not work with piped commands.
 	 * It does not work when the output contains unicode.
 	 * It does not return the return code of the command.
 	 * 
-	 * @param runtime The runtime in which to execute the command
-	 * @param command The command to execute. 
-	 * @return The output of running the command. 
+	 * @param runtime The runtime in which to execute the command.
+	 * @param command The command to execute.
+	 * @return The output of running the command.
 	 * @throws IOException
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
-	String getCommandOutput(Runtime runtime, String command) throws IOException, InterruptedException {
-		Process proc = runtime.exec(new String[] {"/bin/bash", "-c", command});
-		proc.waitFor();
+	private String getCommandOutput(String command) throws IOException, InterruptedException {
+		Process proc = Runtime.getRuntime().exec(command);
 		InputStream inStream = proc.getInputStream();
 		
 		StringBuilder sb = new StringBuilder();
-		while(inStream.available() != 0) {
-			sb.append((char) inStream.read());
+		while(inStream.available() != 0 || proc.isAlive()) {
+			int c = inStream.read();
+			if( c != -1) sb.append((char) c);
 		}
 		inStream.close();
-		System.out.println(sb);
 		return sb.toString();
 	}
 	
-	private void deduceLinuxEnvironment(Runtime runtime) throws IOException, InterruptedException {
-//		processorType = getCommandOutput(runtime, "cat /proc/cpuinfo | grep model | grep name | cut -d: -f2- | head -n 1");
-		processorType = getCommandOutput(runtime, "cat /proc/cpuinfo");
-		
+	private void deduceLinuxEnvironment() throws IOException, InterruptedException {
+		String cpuInfo = getCommandOutput("cat /proc/cpuinfo");
+		Matcher matcher = Pattern.compile("model name\\s+:.*\n").matcher(cpuInfo);
+		processorType = matcher.find() ? matcher.group().substring("model name	: ".length()).replaceAll("\\s+$", "") : "";
+
+		String memInfo = getCommandOutput("cat /proc/meminfo");
+		matcher = Pattern.compile("MemFree.*\n").matcher(memInfo);
+		memFree = matcher.find() ? matcher.group().substring("MemFree:        ".length()).replaceAll("\\s+$", "") : "";
 	}
 
 	public static void main(String args[]) throws IOException, InterruptedException {
+		System.out.println("Writing out " + System.getProperty("user.dir") + "/environment.json");
 		Environment env = new Environment();
 		ObjectMapper objMapper = new ObjectMapper();
-		objMapper.writeValue(new File("environment.json"), env);
+		objMapper.writerWithDefaultPrettyPrinter().writeValue(new File("environment.json"), env);
+
 	}
 
 }
