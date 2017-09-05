@@ -33,14 +33,17 @@ To quickly run a benchmark while you are developing (as shown in help) :
 $ java -jar target/javabench.jar -f 1 -wi 1 -i 1 <TheNameOfTheBenchMark>
 ```
 
+To run the benchmarks and write output to a JSON file that can be uploaded
+```
+$ java -jar target/javabench.jar -rf json -rff results-file.json
+```
+
 ### Benchmarks
 1. NoLocking : How often can an unsynchronized method be called?
 2. IntrinsicLocking : How often can a synchronized method be called?
 3. AtomicInteger : How often can an AtomicInteger be incremented
 4. Random : How often can different Random Number Generators produce integers?
-5. ConcurrentHashMap performance : How often can get and put be called on a ConcurrentHashMap
-6. Collections.synchronizedMap(HashMap) performance
-
+5. HashMap performance : How often can get and put be called on a ConcurrentHashMap and Collections.synchronizedMap(HashMap)
 
 ### TO DO
 1. Lambda for sorting performance
