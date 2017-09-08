@@ -50,7 +50,8 @@ public class WaitNotify {
 	 */
 	@State(Scope.Benchmark)
 	public static class LockObject {
-		int nextThreadId = 0;
+		//This MUST be volatile because we do want the value to be propagated across all CPUs.
+		volatile int nextThreadId = 0;
 		int numThreads;
 
 		@Setup
