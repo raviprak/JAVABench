@@ -45,7 +45,7 @@ public class WaitNotify {
 
 	/**
 	 * This is the Object on which threads lock, wait and notify. It also contains an integer which acts as
-	 * the index of the thread which much wake up next.
+	 * the index of the thread which must wake up next.
 	 */
 	@State(Scope.Benchmark)
 	public static class LockObject {
@@ -67,8 +67,14 @@ public class WaitNotify {
 		}
 	}
 
-	@Benchmark
-	public void waitNotifyMethod(LockObject lock, ThreadParams threads) throws InterruptedException {
+	/**
+	 * This is a bad  non-deterministic benchmark. Let's say there are 4 threads : A, B, C and D (with increasing thread IDs). Since notify() makes
+	 * no guarantees about which thread it will wake up, it may so happen that C wakes up B. B comes out of wait, checks the condition and goes back
+	 * to waiting (without even notifying anyone else).
+	 * Hence commenting it out. 
+	 */
+//	@Benchmark
+	public void waitRoundRobinNotifyMethod(LockObject lock, ThreadParams threads) throws InterruptedException {
 		synchronized(lock) {
 			while(threads.getThreadIndex() != lock.nextThreadId) {
 				lock.wait();
@@ -78,8 +84,12 @@ public class WaitNotify {
 		}
 	}
 
+	/**
+	 * This benchmark is not ideal either. After being awoken, all the threads must compete to obtain the lock. On a machines with more threads, this
+	 * can be expected to take more time. So the benchmark is flawed in that sense. 
+	 */
 	@Benchmark
-	public void waitNotifyAllMethod(LockObject lock, ThreadParams threads) throws InterruptedException {
+	public void waitRoundRobinNotifyAllMethod(LockObject lock, ThreadParams threads) throws InterruptedException {
 		synchronized(lock) {
 			while(threads.getThreadIndex() != lock.nextThreadId) {
 				lock.wait();
@@ -88,4 +98,5 @@ public class WaitNotify {
 			lock.notifyAll();
 		}
 	}
+
 }

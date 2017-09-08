@@ -44,6 +44,7 @@ $ java -jar target/javabench.jar -rf json -rff results-file.json
 3. AtomicInteger : How often can an AtomicInteger be incremented
 4. Random : How often can different Random Number Generators produce integers?
 5. HashMap performance : How often can get and put be called on a ConcurrentHashMap and Collections.synchronizedMap(HashMap)
+6. wait() & notifyall() : How often can threads call wait()-notify() in a **round-robin**
 
 ### TO DO
 1. Lambda for sorting performance
