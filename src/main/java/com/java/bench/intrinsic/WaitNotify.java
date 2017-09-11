@@ -27,6 +27,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
+import org.openjdk.jmh.infra.Control;
 import org.openjdk.jmh.infra.ThreadParams;
 
 /**
@@ -68,7 +69,7 @@ public class WaitNotify {
 	}
 
 	/**
-	 * This is a bad  non-deterministic benchmark. Let's say there are 4 threads : A, B, C and D (with increasing thread IDs). Since notify() makes
+	 * This is a bad non-deterministic benchmark and it can livelock. Let's say there are 4 threads : A, B, C and D (with increasing thread IDs). Since notify() makes
 	 * no guarantees about which thread it will wake up, it may so happen that C wakes up B. B comes out of wait, checks the condition and goes back
 	 * to waiting (without even notifying anyone else).
 	 * Hence commenting it out. 
@@ -85,14 +86,16 @@ public class WaitNotify {
 	}
 
 	/**
-	 * This benchmark is not ideal either. After being awoken, all the threads must compete to obtain the lock. On a machines with more threads, this
-	 * can be expected to take more time. So the benchmark is flawed in that sense. 
+	 * This benchmark is not ideal either. After being awoken, all the threads must compete to obtain the lock. On a machine with more threads, this
+	 * can be expected to take more time. So the benchmark is flawed in that sense.
 	 */
 	@Benchmark
-	public void waitRoundRobinNotifyAllMethod(LockObject lock, ThreadParams threads) throws InterruptedException {
+	public void waitRoundRobinNotifyAllMethod(LockObject lock, ThreadParams threads, Control control) throws InterruptedException {
 		synchronized(lock) {
-			while(threads.getThreadIndex() != lock.nextThreadId) {
-				lock.wait();
+			//Checking control.stopMeasurement here because we don't know which order JMH stops the threads in. It may be that a jmh-worker thread is in here
+			//waiting for nextThreadId to become its index, while all the other threads are in teardown (and so the nextThreadId is not being incremented)
+			while(!control.stopMeasurement && threads.getThreadIndex() != lock.nextThreadId) {
+				lock.wait(1000);
 			}
 			lock.incNextThreadId();
 			lock.notifyAll();
