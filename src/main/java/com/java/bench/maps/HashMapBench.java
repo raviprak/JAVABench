@@ -74,7 +74,7 @@ public class HashMapBench {
 		 */
 		Map<Integer, Integer> map;
 
-		//Run the setup only once for all iteration of the benchmark.
+		//Run the setup only once for all iterations of the benchmark.
 		@Setup(Level.Trial)
 		public void setup() {
 			//TODO: We are not specifying LOAD_FACTOR. Maybe we should?

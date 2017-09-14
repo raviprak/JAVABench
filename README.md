@@ -45,6 +45,7 @@ $ java -jar target/javabench.jar -rf json -rff results-file.json
 4. Random : How often can different Random Number Generators produce integers?
 5. HashMap performance : How often can get and put be called on a ConcurrentHashMap and Collections.synchronizedMap(HashMap)
 6. wait() & notifyall() : How often can threads call wait()-notifyAll() in a **round-robin**
+7. Lookup : How often can Collection.contains() be called on an ArrayList vs HashSet.
 
 ### TO DO
 1. Lambda for sorting performance
