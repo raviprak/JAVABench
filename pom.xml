@@ -35,7 +35,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.18</jmh.version>
+        <jmh.version>1.19</jmh.version>
         <jackson.version>2.9.0</jackson.version>
         <javac.target>1.8</javac.target>
         <uberjar.name>javabench</uberjar.name>
