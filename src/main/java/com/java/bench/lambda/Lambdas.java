@@ -57,50 +57,19 @@ public class Lambdas {
 		BenchRandomUtil rng = new BenchRandomUtil();
 	}
 
-	@State(Scope.Benchmark)
-	public static class CollectionState {
-		//The size of the Collection. MUST BE 2^n-1 since our modulo operation depends on it.
-		@Param({"255", "8191", "16383", "32767"})
-		int DATA_SIZE;
-
-		@Param({"HashSet", "ArrayList"})
-		String dataType;
-
-		/** This is the Collection that is exercised. Depending on dataType it is initialized to different instances.
-		 * The value type is Integer because that is most likely the word size.
-		 */
-		Collection<Integer> data;
-
-		//Run the setup only once for all iterations of the benchmark.
-		@Setup(Level.Trial)
-		public void setup() {
-			//TODO: We are not specifying LOAD_FACTOR. Maybe we should?
-			if(dataType.equals("HashSet")) {
-				data = new HashSet<>(DATA_SIZE);
-			} else if(dataType.equals("ArrayList")) {
-				data = new ArrayList<>(DATA_SIZE);
-			}
-
-			//We'll seed the collection with numbers so that Collection.contains() actually does work.
-			for(int i=0; i<DATA_SIZE; ++i) {
-				data.add(i);
-			}
-		}
-	}
-
 	/**
 	 * TODO : Compare with anonymous classes.
-	 * 1. Comparators for sorting anonymous, concrete and lambda.
 	 */
 
 	/**
 	 *	This benchmark tests how frequently lookups can be done on different Collections.
 	 */
 	@Benchmark
-	public boolean testCollectionContains(CollectionState collectionState, RNGState rngState) {
+	public boolean testLambdaCalls(RNGState rngState) {
 		//This is similar to a modulo operation since DATA_SIZE is 2^n - 1
 		int keyValue = rngState.rng.getNextXorShiftRN() & collectionState.DATA_SIZE;
-		return collectionState.data.contains(keyValue);
+		//TODO: Yeah! Actually call a lambda please!
+		return true;
 	}
 
 }

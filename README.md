@@ -59,6 +59,7 @@ $ java -jar target/javabench.jar -rf json -rff results-file.json
 9. Varargs overhead
 10. Boxing overhead
 11. Eclipse collections? 
+12. ReadWrite locks vs synchronized locks. https://stackoverflow.com/questions/34611106/synchronized-vs-readwritelock-performance
 
 ### Measurement variables
 1. JDK7, JDK8, JDK9. Let's compile and run on the same version and not worry about cross-version testing.
