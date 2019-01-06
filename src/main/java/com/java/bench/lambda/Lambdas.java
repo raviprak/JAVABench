@@ -67,7 +67,7 @@ public class Lambdas {
 	@Benchmark
 	public boolean testLambdaCalls(RNGState rngState) {
 		//This is similar to a modulo operation since DATA_SIZE is 2^n - 1
-		int keyValue = rngState.rng.getNextXorShiftRN() & collectionState.DATA_SIZE;
+		//int keyValue = rngState.rng.getNextXorShiftRN() & collectionState.DATA_SIZE;
 		//TODO: Yeah! Actually call a lambda please!
 		return true;
 	}
