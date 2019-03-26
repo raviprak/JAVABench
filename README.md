@@ -61,6 +61,11 @@ $ java -jar target/javabench.jar -rf json -rff results-file.json
 11. Eclipse collections? 
 12. ReadWrite locks vs synchronized locks. https://stackoverflow.com/questions/34611106/synchronized-vs-readwritelock-performance
 
+JAVABench-HomePage architecture
+• Write a program to spit out details about the test environment
+• For each environment generated output on different page for each test.
+
+
 ### Measurement variables
 1. JDK7, JDK8, JDK9. Let's compile and run on the same version and not worry about cross-version testing.
 2. Laptop, Intel Desktop, AMD Desktop, DigitalOcean VM, Phone(?)
